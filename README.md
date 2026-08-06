@@ -4,10 +4,10 @@ An educational JavaFX desktop application that visually demonstrates how Java
 programs execute inside the Java Virtual Machine — Stack, Heap, Static Area,
 String Pool, references, and Garbage Collection — one statement at a time.
 
-Built from the project's [Software Requirements Specification](Software%20Requirements%20Specification.docx).
-This is the **Phase 1 MVP**: the core visualization loop (FR-2, 3, 4, 5, 6, 7,
-8, 9, 10, 11, 13, 14). Dashboard, Learning Mode, and Quiz Module (FR-1, 12,
-15) are planned for later phases.
+Built from the project's Software Requirements Specification (SRS, kept
+locally, not in this repo). This is the **Phase 1 MVP**: the core
+visualization loop (FR-2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14). Dashboard,
+Learning Mode, and Quiz Module (FR-1, 12, 15) are planned for later phases.
 
 ## Features
 
