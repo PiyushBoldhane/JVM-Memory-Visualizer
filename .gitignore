@@ -1,6 +1,7 @@
 target/
 sessions/
 .claude/
+Software Requirements Specification.docx
 *.class
 *.log
 .idea/
