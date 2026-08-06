@@ -1,0 +1,81 @@
+/* Dark mode theme (NFR - Usability: Dark mode support) */
+
+.root {
+    -fx-base: #1e1e2e;
+    -fx-background: #1e1e2e;
+    -fx-control-inner-background: #262637;
+    -fx-text-fill: #cdd6f4;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-accent: #89b4fa;
+}
+
+.border-pane, .split-pane, .scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: #1e1e2e;
+}
+
+.scroll-pane {
+    -fx-background: #1e1e2e;
+}
+
+.tool-bar {
+    -fx-background-color: #181825;
+    -fx-border-color: transparent transparent #313244 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.label {
+    -fx-text-fill: #cdd6f4;
+}
+
+.text-area {
+    -fx-control-inner-background: #12121c;
+    -fx-text-fill: #e6e6f0;
+    -fx-highlight-fill: #45475a;
+    -fx-highlight-text-fill: white;
+}
+
+.text-area .content {
+    -fx-background-color: #12121c;
+}
+
+.button {
+    -fx-background-color: #313244;
+    -fx-text-fill: #cdd6f4;
+    -fx-background-radius: 6;
+    -fx-padding: 6 12 6 12;
+}
+
+.button:hover {
+    -fx-background-color: #45475a;
+}
+
+.button:disabled {
+    -fx-opacity: 0.45;
+}
+
+.combo-box {
+    -fx-background-color: #313244;
+    -fx-text-fill: #cdd6f4;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #cdd6f4;
+    -fx-background-color: #313244;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #262637;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #45475a;
+}
+
+.scroll-bar {
+    -fx-background-color: #1e1e2e;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #45475a;
+    -fx-background-radius: 6;
+}
