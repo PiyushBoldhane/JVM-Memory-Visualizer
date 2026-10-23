@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JVM Memory Visualizer</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>JVM Memory Visualizer</h1>
+  <p>Step through simulated Java stack, heap, string pool and garbage collection.</p>
+</header>
+
+<main>
+  <section class="playground">
+    <div class="toolbar">
+      <select id="exampleSelect"></select>
+      <button id="runBtn">▶ Run</button>
+      <button id="gcBtn" disabled>🗑 Run GC</button>
+    </div>
+    <textarea id="codeArea" spellcheck="false"></textarea>
+    <div id="errorLabel" class="error"></div>
+    <details class="syntax-hint">
+      <summary>Supported statement shapes</summary>
+      <ul>
+        <li><code>Type name = new Class(args);</code> — declaration + object creation</li>
+        <li><code>Type name = other;</code> — declaration + reference/primitive copy</li>
+        <li><code>Type name = "literal" | 123 | true;</code> — declaration + literal</li>
+        <li><code>Type name = null;</code> — declaration + null init</li>
+        <li><code>Type name;</code> — bare declaration</li>
+        <li><code>static Type name = ...;</code> — static field</li>
+        <li><code>name = new Class(args);</code> — reassignment to a new object</li>
+        <li><code>name = other;</code> / <code>name = "lit";</code> / <code>name = null;</code> — assignment</li>
+        <li><code>owner.field = value;</code> — field assignment (value, null, var ref, or <code>new Class(args)</code>)</li>
+        <li><code>name();</code> / <code>owner.method();</code> — bare method call</li>
+        <li><code>name = owner.method();</code> / <code>Type name = owner.method();</code> — call with captured result</li>
+      </ul>
+      <p class="syntax-hint-note">
+        This simulates a fixed set of statement shapes, not a full Java interpreter —
+        method bodies are never executed, so a captured call result is always
+        modeled as unknown, and calls like <code>System.out.println(...)</code>
+        aren't supported since they don't touch stack/heap memory.
+      </p>
+    </details>
+  </section>
+
+  <section class="visualization">
+    <div id="vizStage">
+      <div id="vizColumns">
+        <div id="stackColumn" class="viz-column">
+          <div class="viz-column-title">STACK</div>
+        </div>
+        <div id="heapColumn" class="viz-column">
+          <div class="viz-column-title">HEAP</div>
+        </div>
+      </div>
+      <div id="staticArea" class="area-bar" hidden>
+        <span class="area-bar-title">STATIC AREA</span>
+        <span id="staticAreaContent" class="area-bar-content"></span>
+      </div>
+      <div id="stringPool" class="area-bar" hidden>
+        <span class="area-bar-title">STRING POOL</span>
+        <span id="stringPoolContent" class="area-bar-content"></span>
+      </div>
+      <svg id="arrowLayer"></svg>
+    </div>
+    <div class="timeline-controls">
+      <button id="restartBtn" disabled>⏮ Restart</button>
+      <button id="prevBtn" disabled>◀ Prev</button>
+      <button id="playPauseBtn" disabled>▶ Auto Play</button>
+      <button id="nextBtn" disabled>Next ▶</button>
+      <span id="stepLabel">Step 0 / 0</span>
+    </div>
+    <div id="descriptionLabel" class="description"></div>
+    <div id="statsLabel" class="stats"></div>
+  </section>
+</main>
+
+<script src="examples.js"></script>
+<script src="renderer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

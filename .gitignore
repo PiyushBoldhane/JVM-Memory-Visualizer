@@ -1,6 +1,7 @@
 target/
 sessions/
 .claude/
+graphify-out/
 Software Requirements Specification.docx
 *.class
 *.log

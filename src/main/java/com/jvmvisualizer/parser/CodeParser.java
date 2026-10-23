@@ -57,6 +57,8 @@ public class CodeParser {
     private static final Pattern ASSIGN_VAR_REF = Pattern.compile(
             "^(" + ID + ")\\s*=\\s*(" + ID + ")\\s*;$");
 
+    private static final Pattern FIELD_ASSIGN_NEW_OBJECT = Pattern.compile(
+            "^(" + ID + ")\\.(" + ID + ")\\s*=\\s*new\\s+(" + ID + ")\\s*\\((.*)\\)\\s*;$");
     private static final Pattern FIELD_ASSIGN_NULL = Pattern.compile(
             "^(" + ID + ")\\.(" + ID + ")\\s*=\\s*null\\s*;$");
     private static final Pattern FIELD_ASSIGN_LITERAL = Pattern.compile(
@@ -102,7 +104,7 @@ public class CodeParser {
         }
         if ((m = DECL_LITERAL.matcher(line)).matches()) {
             ParsedStatement s = decl(lineNumber, line, m.group(1), m.group(2), m.group(3));
-            s.rhs = literal(m.group(4));
+            s.rhs = literal(m.group(4), m.group(2));
             return s;
         }
         if ((m = DECL_VAR_REF.matcher(line)).matches()) {
@@ -133,7 +135,7 @@ public class CodeParser {
         }
         if ((m = ASSIGN_LITERAL.matcher(line)).matches()) {
             ParsedStatement s = assign(lineNumber, line, m.group(1));
-            s.rhs = literal(m.group(2));
+            s.rhs = literal(m.group(2), null);
             return s;
         }
         if ((m = ASSIGN_VAR_REF.matcher(line)).matches()) {
@@ -142,6 +144,11 @@ public class CodeParser {
             return s;
         }
 
+        if ((m = FIELD_ASSIGN_NEW_OBJECT.matcher(line)).matches()) {
+            ParsedStatement s = fieldAssign(lineNumber, line, m.group(1), m.group(2));
+            s.rhs = Rhs.ofNewObject(m.group(3), m.group(4));
+            return s;
+        }
         if ((m = FIELD_ASSIGN_NULL.matcher(line)).matches()) {
             ParsedStatement s = fieldAssign(lineNumber, line, m.group(1), m.group(2));
             s.rhs = Rhs.ofNull();
@@ -149,7 +156,7 @@ public class CodeParser {
         }
         if ((m = FIELD_ASSIGN_LITERAL.matcher(line)).matches()) {
             ParsedStatement s = fieldAssign(lineNumber, line, m.group(1), m.group(2));
-            s.rhs = literal(m.group(3));
+            s.rhs = literal(m.group(3), null);
             return s;
         }
         if ((m = FIELD_ASSIGN_VAR_REF.matcher(line)).matches()) {
@@ -191,7 +198,13 @@ public class CodeParser {
         return s;
     }
 
-    private Rhs literal(String token) {
+    /**
+     * @param declaredType the type named on the left of a declaration (e.g. "double" in
+     *                      "double d = 5;"), or null when there is none (plain/field assignment).
+     *                      A whole-number token takes this type when it names a floating-point
+     *                      type, so "double d = 5;" stores 5.0/"double" rather than 5/"int".
+     */
+    private Rhs literal(String token, String declaredType) {
         if (token.startsWith("\"") && token.endsWith("\"")) {
             return Rhs.ofLiteral(token.substring(1, token.length() - 1), "String");
         }
@@ -200,6 +213,9 @@ public class CodeParser {
         }
         if (token.contains(".")) {
             return Rhs.ofLiteral(Double.parseDouble(token), "double");
+        }
+        if ("double".equals(declaredType) || "float".equals(declaredType)) {
+            return Rhs.ofLiteral(Double.parseDouble(token), declaredType);
         }
         return Rhs.ofLiteral(Integer.parseInt(token), "int");
     }
